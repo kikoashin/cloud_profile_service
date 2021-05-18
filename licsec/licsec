@@ -1,0 +1,120 @@
+#!/bin/bash
+#######################################
+# FUNCTIONS
+#######################################
+lic_sec_dir=$(dirname "$0")
+source "${lic_sec_dir}/lic-sec_utils.sh"
+
+# check root
+check_if_root() {
+    if [[ $EUID -ne 0 ]]; then
+        echo "licsec ${1} must be run as root" 
+        exit 1
+    fi
+    return 0
+}
+
+# Run the Docker services with licsec service
+run () {
+    check_if_root "run"
+    echo '***generate new default profiles and docker-compose file***'
+    #sudo rm /etc/apparmor.d/licsec/runtime/docker_* -f
+    #python3 /home/hui/code/licsec_service/script_temp_vm/run.py
+    python3 /etc/apparmor.d/licsec/run.py
+    echo '***load default profiles to kernel***'
+    #sudo cp /etc/apparmor.d/licsec/service/docker_* /etc/apparmor.d/licsec/runtime/
+    apparmor_parser -r -W /etc/apparmor.d/licsec/runtime/docker_*
+    echo '***create docker services***'
+    docker-compose up --no-start --build
+    echo '***enter into training mode***'
+    for i in $( docker ps -a --format '{{.Names}}');
+        do
+	echo $i
+        lic-sec_train-start "$i"
+    done
+    echo '***run docker services***'
+    docker-compose up --build -d
+
+
+
+}
+
+# Start training period
+train-start () {
+    check_if_root "train-start"
+    echo '***enable traning***'
+    if [ -z "${@:1}" ];then
+        for i in $( docker ps --format '{{.Names}}');
+            do
+            lic-sec_train-start $i
+        done
+    else
+        lic-sec_train-start "${@:1}"
+    fi
+}
+
+# Stop training period
+train-stop () {
+    check_if_root "train-stop"
+    echo '***disable traning***'
+    if [ -z "${@:1}" ];then
+        for i in $( docker ps --format '{{.Names}}');
+            do
+            lic-sec_train-stop $i
+        done
+    else
+        lic-sec_train-stop "${@:1}"
+    fi
+}
+
+# Display and tail the logs of all containers or the specified one's
+logs () {
+    docker-compose logs -f "${@:1}"
+}
+
+# Remove all containers and volumes
+down () {
+    check_if_root "down"
+    apparmor_parser -R /etc/apparmor.d/licsec/runtime/docker_*
+    rm /etc/apparmor.d/licsec/runtime/docker_* -f
+    docker-compose down -v
+}
+#######################################
+# MENU
+#######################################
+
+case "$1" in
+    run)
+        run "${@:2}"
+        ;;
+    train-start)
+        train-start "${@:2}"
+        ;;
+    train-stop)
+        train-stop "${@:2}"
+        ;;
+    logs)
+        logs "${@:2}"
+        ;;
+    down)
+        down "${@:2}"
+        ;;
+    *)
+        cat << EOF
+
+Command line interface for the licsec profile generator service.
+
+Usage:
+    licsec <command> [options] [arguments]
+
+Available commands:
+    run        ...................................... Run the Docker services with licsec service
+    train-start  .................................... Start training period of all containers or specified container
+    train-stop     .................................. Stop training period of all containers or specified container
+    logs [container] ................................ Display and tail the logs of all containers or specified container
+    down       ...................................... Remove all containers and volumes
+
+EOF
+        exit
+        ;;
+esac
