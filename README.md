@@ -1,7 +1,7 @@
 # Cloud Profile Generator Service
 It is a secure cloud service for generating a Linux security module, AppArmor profiles for containerized services. The profile generator service implements container runtime profiling to apply customized AppArmor policies to protect containerized services without the need to make hard and potentially error-prone manual policy configurations. 
 
-<img src="https://github.com/kikoashin/cloud_profile_generator_service/blob/master/imple.png"  width="400" height="400"/>
+<img src="https://github.com/kikoashin/cloud_profile_service/blob/main/imple.png" width="400" height="400"/>
 
 ## Profile Generator
 It is a command-line tool that can automatically generate AppArmor profiles based on container runtime behaviors. Rules generated include capabilities rules, network access rules, link rules, file access rules, and execution rules.
