@@ -27,6 +27,7 @@ sudo cp licsec/lic-sec_utils.sh /usr/bin
 
 The profile generator must be run with root priviledge
 
+
 ```bash
 Command line interface for the licsec profile generator service.
 
@@ -40,6 +41,16 @@ Available commands:
     logs [container]        .................................... Display and tail the logs of all containers or specified container
     down                    .................................... Remove all containers and volumes
 ```
+
+
+Note that ````licsec run```` command is different from other commands. It run the licsec service while launching the microservice:
+
+1. generate default AppArmor profile for each container in docker-compose.yml
+2. load the default AppArmor profiles to kernel
+3. create Docker services based on docker-compose.yml
+4. enable training period
+5. run Docker services
+
 
 * Code Structure
 
