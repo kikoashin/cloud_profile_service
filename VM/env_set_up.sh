@@ -8,14 +8,14 @@ sudo apt-get upgrade
 #install profile generator
 sudo apt-get -y install auditd audispd-plugins
 sudo apt-get -y install apparmor-utils
-git clone https://github.com/kikoashin/licsec.git
-sudo cp -r ./licsec /etc/apparmor.d/
-sudo cp /etc/apparmor.d/licsec/service/licsec /usr/bin
-sudo cp -r /etc/apparmor.d/licsec/command/. /usr/bin
+git clone https://github.com/kikoashin/cloud_profile_service.git
+sudo cp -r cloud_profile_service/licsec /etc/apparmor.d/
+sudo cp cloud_profile_service/licsec/licsec /usr/bin
+sudo cp cloud_profile_service/licsec/lic-sec_utils.sh /usr/bin
 
 #install docker and docker-compose
 curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
+sudo sh get-docker.sh >/dev/null
 sudo usermod -aG docker $USER
 newgrp docker  
 sudo curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose

@@ -108,11 +108,11 @@ Usage:
     licsec <command> [options] [arguments]
 
 Available commands:
-    run        ...................................... Run the Docker services with licsec service
-    train-start  .................................... Start training period of all containers or specified container
-    train-stop     .................................. Stop training period of all containers or specified container
-    logs [container] ................................ Display and tail the logs of all containers or specified container
-    down       ...................................... Remove all containers and volumes
+    run                     .................................... Run the Docker services with licsec service
+    train-start [container] .................................... Start training period of all containers or specified container
+    train-stop [container]  .................................... Stop training period of all containers or specified container
+    logs [container]        .................................... Display and tail the logs of all containers or specified container
+    down                    .................................... Remove all containers and volumes
 
 EOF
         exit
