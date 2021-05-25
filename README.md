@@ -30,12 +30,11 @@ The profile generator must be run with root priviledge
 
 ```bash
 Command line interface for the licsec profile generator service.
-
 Usage:
-    licsec <command> [options] [arguments]
-
+    licsec <command> [arguments]
 Available commands:
-    run                     .................................... Run the Docker services with licsec service
+    run-all                 .................................... Run Docker services with licsec service
+    run-docker              .................................... Run Docker services only
     train-start [container] .................................... Start training period of all containers or specified container
     train-stop [container]  .................................... Stop training period of all containers or specified container
     logs [container]        .................................... Display and tail the logs of all containers or specified container
