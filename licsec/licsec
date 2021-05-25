@@ -15,7 +15,7 @@ check_if_root() {
 }
 
 # Run the Docker services with licsec service
-run () {
+run-all () {
     check_if_root "run"
     echo '***generate new default profiles and docker-compose file***'
     #sudo rm /etc/apparmor.d/licsec/runtime/docker_* -f
@@ -37,6 +37,20 @@ run () {
 
 
 
+}
+
+# Run the Docker services only
+run-docker () {
+    check_if_root "run"
+    echo '***generate new default profiles and docker-compose file***'
+    #sudo rm /etc/apparmor.d/licsec/runtime/docker_* -f
+    #python3 /home/hui/code/licsec_service/script_temp_vm/run.py
+    python3 /etc/apparmor.d/licsec/run.py
+    echo '***load default profiles to kernel***'
+    #sudo cp /etc/apparmor.d/licsec/service/docker_* /etc/apparmor.d/licsec/runtime/
+    apparmor_parser -r -W /etc/apparmor.d/licsec/runtime/docker_*
+    echo '***run docker services***'
+    docker-compose up --build -d
 }
 
 # Start training period
@@ -84,8 +98,11 @@ down () {
 #######################################
 
 case "$1" in
-    run)
-        run "${@:2}"
+    run-all)
+        run-all "${@:2}"
+        ;;
+    run-docker)
+        run-docker "${@:2}"
         ;;
     train-start)
         train-start "${@:2}"
@@ -105,10 +122,11 @@ case "$1" in
 Command line interface for the licsec profile generator service.
 
 Usage:
-    licsec <command> [options] [arguments]
+    licsec <command> [arguments]
 
 Available commands:
-    run                     .................................... Run the Docker services with licsec service
+    run-all                 .................................... Run Docker services with licsec service
+    run-docker              .................................... Run Docker services only
     train-start [container] .................................... Start training period of all containers or specified container
     train-stop [container]  .................................... Stop training period of all containers or specified container
     logs [container]        .................................... Display and tail the logs of all containers or specified container
