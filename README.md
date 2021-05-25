@@ -42,7 +42,7 @@ Available commands:
 ```
 
 
-Note that ````licsec run```` command is different from other commands. It run the licsec service while launching the microservice:
+Note that ````licsec run-all```` command is different from other commands. It run the licsec service while launching the microservice:
 
 1. generate default AppArmor profile for each container in docker-compose.yml
 2. load the default AppArmor profiles to kernel
