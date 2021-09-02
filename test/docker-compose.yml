@@ -1,0 +1,36 @@
+version: '3'
+services:
+
+  flaskapp:
+    #build: ./flaskapp/
+    image: kikohui/cloudifactory:emgsmm_server
+    container_name: emgsmm_flask
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    links:
+      - redis:emgsmm_redis
+    #security_opt:
+    #- apparmor:docker_flaskapp
+
+
+
+  redis:
+    #build: ./redisdb/
+    image: kikohui/cloudifactory:emgsmm_database
+    container_name: emgsmm_redis
+    expose:
+      - "6379"
+    ports:
+      - "6379:6379"
+    volumes:
+      - db-data:/data
+    #security_opt:
+    #- apparmor:docker_redis
+
+
+volumes:
+  db-data:
+
+

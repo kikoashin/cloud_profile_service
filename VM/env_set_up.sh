@@ -7,6 +7,7 @@ sudo apt-get upgrade
 
 #install profile generator
 sudo apt-get -y install auditd audispd-plugins
+#apparmor-utils package needs python < 3.9
 sudo apt-get -y install apparmor-utils
 git clone https://github.com/kikoashin/cloud_profile_service.git
 sudo cp -r cloud_profile_service/licsec /etc/apparmor.d/
