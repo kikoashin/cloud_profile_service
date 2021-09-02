@@ -2,8 +2,8 @@
 Description=Manager Service
 
 [Service]
-User=ubuntu
-Group=ubuntu
+User=root
+Group=root
 WorkingDirectory=/home/ubuntu/
 ExecStart=/home/ubuntu/manager.sh
 

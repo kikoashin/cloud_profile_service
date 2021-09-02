@@ -7,7 +7,7 @@ do
     then
         #echo $(find . -name '*.json')
         echo "**************************** licsec run *****************************"
-        licsec run &
+        licsec run-all &
         sleep 10
         echo "***************************** newman run *****************************"
         /usr/local/bin/newman run $(find . -maxdepth 1 -name '*.json') --ssl-client-cert /home/ubuntu/cert.crt --ssl-client-key /home/ubuntu/key_cli.pem &
